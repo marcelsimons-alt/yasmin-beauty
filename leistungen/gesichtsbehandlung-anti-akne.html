@@ -818,7 +818,7 @@ img { max-width: 100%; height: auto; display: block; }
       <div class="footer-contact-item"><span>+49 163 27 86 420</span></div>
       <div class="footer-contact-item"><span>info@yasmin-beauty.de</span></div>
       <div class="footer-contact-item"><span>Gurlittstraße 33 20099 Hamburg</span></div>
-      <h4 style="margin-top:24px">Öffnungszeiten</h4><div class="footer-hours"><div class="footer-hours-row"><span>Dienstag – Freitag</span><span>10 – 18</span></div><div class="footer-hours-row"><span>Samstag</span><span>10 – 14</span></div></div>
+      <h4 style="margin-top:24px">Öffnungszeiten</h4><div class="footer-hours"><div class="footer-hours-row"><span>Dienstag –</span><span>Freitag</span></div><div class="footer-hours-row"><span>10 – 18</span><span></span></div><div class="footer-hours-row"><span>Samstag</span><span></span></div><div class="footer-hours-row"><span>10 – 14</span><span></span></div></div>
     </div>
     <div>
       <h4>Rechtliches</h4>
@@ -881,8 +881,16 @@ document.addEventListener('DOMContentLoaded', function() {
     entries.forEach(function(e) {
       if (e.isIntersecting) e.target.classList.add('visible');
     });
-  }, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
-  document.querySelectorAll('.rv, .img-scale, .img-clip, .line-reveal, .split-reveal').forEach(function(el) { obs.observe(el); });
+  }, { threshold: 0.02, rootMargin: '50px 0px -20px 0px' });
+  var rvEls = document.querySelectorAll('.rv, .img-scale, .img-clip, .line-reveal, .split-reveal');
+  rvEls.forEach(function(el) { obs.observe(el); });
+  // Fallback: reveal elements already in viewport on load
+  setTimeout(function() {
+    rvEls.forEach(function(el) {
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) el.classList.add('visible');
+    });
+  }, 300);
 
   // Split text — add staggered delays
   document.querySelectorAll('.split-reveal').forEach(function(el) {
